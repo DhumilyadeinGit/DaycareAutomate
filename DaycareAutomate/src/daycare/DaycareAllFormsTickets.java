@@ -13,46 +13,31 @@ public class DaycareAllFormsTickets {
 
 	public static void main(String[] args) {
 
-		//Setting property for geckodriver.exe to start automation
-		System.setProperty("webdriver.gecko.driver", "C:/Kapil Java Workspace/External Resources/geckodriver.exe");
+		System.out.println("AFT started to open the website daycare.day.com/home.html");
 		
-		//Scheduling Daycare All Tickets refresh task
-		startAllTicketsRefreshTask();
-
-	}
-
-	public static void performTicketTask() {
+		// Setting property for geckodriver.exe to start automation
+		System.setProperty("webdriver.gecko.driver", "C:/Kapil Java Workspace/External Resources/geckodriver.exe");
 
 		// Create a new instance of the Firefox driver
 		WebDriver driver = new FirefoxDriver();
 
 		// Launch the Online Store Website
 		driver.get("https://kavyas@adobe.com:Thankyouadobe@1@daycare.day.com/home.html");
+		//driver.manage().timeouts().implicitlyWait(arg0, arg1)
 
-		// Print a Log In message to the screen
-		System.out.println("Successfully opened the website www.Store.Demoqa.com");
+		System.out.println("Successfully opened the website daycare.day.com/home.html");
 
-		// Wait for 5 Sec
-		try {
-			Thread.sleep(1 * 1000);
+		// Scheduling Daycare All Tickets refresh task
+		startAllTicketsRefreshTask(driver);
 
-			selectAssignedTo(driver);
+		System.out.println("Main ENDED");
 
-			Thread.sleep(1 * 1000);
+	}
 
-			// driver.findElement(By.xpath("//a[@href='/html/body/table[2]/tbody/tr/td[2]/table[2]/tbody/tr[17]/td/table/tbody/tr[3]/td[4]/table/tbody/tr[1]/td[1]/table/tbody/tr/td/a']")).click();
-			driver.findElement(By
-					.xpath("/html/body/table[2]/tbody/tr/td[2]/table[2]/tbody/tr[17]/td/table/tbody/tr[3]/td[4]/table/tbody/tr[1]/td[1]/table/tbody/tr/td/a"))
-					.click();
-
-			Thread.sleep(30 * 1000);
-
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
+	public static void closeBrowser() {
 
 		// Close the driver
-		driver.quit();
+		// driver.quit();
 	}
 
 	public static void selectAssignedTo(WebDriver driver) {
@@ -61,15 +46,22 @@ public class DaycareAllFormsTickets {
 		oSelect.selectByVisibleText("AEM Forms (LiveCycle) : entrsupp@adobe.com");
 	}
 
-	public static void startAllTicketsRefreshTask() {
+	public static void startAllTicketsRefreshTask(WebDriver driver) {
 
+		System.out.println("startAllTicketsRefreshTask Start");
+		
 		Timer time = new Timer(); // Instantiate Timer Object
 		Calendar calendar = Calendar.getInstance();
-
+		long interval = TimeUnit.MINUTES.toMillis(2);
+		
 		// Start running the task on Monday at 15:40:00, period is set to 8
 		// hours
 		// if you want to run the task immediately, set the 2nd parameter to 0
-		time.schedule(new AllTicketsRefreshTask(), calendar.getTime(), TimeUnit.MINUTES.toMillis(1));
+		time.schedule(new AllTicketsRefreshTask(driver), calendar.getTime(), interval);
+		
+		System.out.println("Refresh scheduled for " + interval);
+		
+		System.out.println("startAllTicketsRefreshTask End");
 	}
 
 }
