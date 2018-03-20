@@ -6,7 +6,7 @@ import java.util.concurrent.TimeUnit;
 
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 
 public class DaycareAllFormsTickets {
@@ -14,16 +14,21 @@ public class DaycareAllFormsTickets {
 	public static void main(String[] args) {
 
 		System.out.println("AFT started to open the website daycare.day.com/home.html");
-		
-		// Setting property for geckodriver.exe to start automation
-		System.setProperty("webdriver.gecko.driver", "C:/Kapil Java Workspace/External Resources/geckodriver.exe");
 
-		// Create a new instance of the Firefox driver
-		WebDriver driver = new FirefoxDriver();
+		// Setting property for geckodriver.exe to start automation - firefox
+		/*
+		 * System.setProperty("webdriver.gecko.driver",
+		 * "C:/Kapil Java Workspace/External Resources/geckodriver.exe");
+		 * WebDriver driver = new FirefoxDriver();
+		 */
+
+		// Setting property for chromedriver.exe to start automation - Chrome
+		System.setProperty("webdriver.chrome.driver", "C:/Kapil Java Workspace/External Resources/chromedriver.exe");
+		WebDriver driver = new ChromeDriver();
 
 		// Launch the Online Store Website
 		driver.get("https://kavyas@adobe.com:Thankyouadobe@1@daycare.day.com/home.html");
-		//driver.manage().timeouts().implicitlyWait(arg0, arg1)
+		// driver.manage().timeouts().implicitlyWait(arg0, arg1)
 
 		System.out.println("Successfully opened the website daycare.day.com/home.html");
 
@@ -49,18 +54,18 @@ public class DaycareAllFormsTickets {
 	public static void startAllTicketsRefreshTask(WebDriver driver) {
 
 		System.out.println("startAllTicketsRefreshTask Start");
-		
+
 		Timer time = new Timer(); // Instantiate Timer Object
 		Calendar calendar = Calendar.getInstance();
 		long interval = TimeUnit.MINUTES.toMillis(2);
-		
+
 		// Start running the task on Monday at 15:40:00, period is set to 8
 		// hours
 		// if you want to run the task immediately, set the 2nd parameter to 0
 		time.schedule(new AllTicketsRefreshTask(driver), calendar.getTime(), interval);
-		
+
 		System.out.println("Refresh scheduled for " + interval);
-		
+
 		System.out.println("startAllTicketsRefreshTask End");
 	}
 
