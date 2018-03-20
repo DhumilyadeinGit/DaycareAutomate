@@ -15,6 +15,8 @@ import org.openqa.selenium.NoSuchElementException;
 import org.openqa.selenium.StaleElementReferenceException;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 /*
  * Class for the refresh task.
@@ -40,52 +42,60 @@ public class AllTicketsRefreshTask extends TimerTask {
 	public static void performTicketTask() {
 
 		System.out.println();
+		
+		count++;
 
 		// Start Daycare and perform required tasks
 		try {
 
-			if (count != 0) {
+			try {
 
-				System.out.println("Refreshing page. count - " + ++count);
-				try {
-					driver.navigate().refresh();
-					
-					if(null != driver.switchTo().alert() && null != driver.switchTo().alert().getText() && driver.switchTo().alert().getText().contains("ticket(s) in list. Take Action")) {
-						driver.switchTo().alert().accept();
-					}
-					
+				if (null != driver.switchTo().alert() && null != driver.switchTo().alert().getText()
+						&& driver.switchTo().alert().getText().contains("ticket(s) in list. Take Action")) {
 					driver.switchTo().alert().accept();
-					System.out.println("Page refresh done. count - " + count);
-				} catch (NoAlertPresentException nape) {
-
-					System.out.println("NoAlertPresentException - " + count);
 				}
-			} else {
-				System.out.println("Skipping page refresh and alert accept for the first time. count - " + ++count);
+
+				System.out.println("Page LOAD done. count - " + count);
+			} catch (NoAlertPresentException nape) {
+
+				System.out.println("NoAlertPresentException - " + count);
 			}
 
 			// Thread.sleep(1 * 1000);
-			checkPageIsReady();
+			// checkPageIsReady();
+			WebDriverWait wait = new WebDriverWait(driver, 15);
+			System.out.println("Waiting for AssignedTO dropdown start");
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.id("AssignedTo")));
+			System.out.println("Wait for AssignedTO dropdown END");
 
 			DaycareAllFormsTickets.selectAssignedTo(driver);
 
-			Thread.sleep(2 * 1000);
+			// Thread.sleep(2 * 1000);
 
-			System.out.println("Now searching the tickets.. count - " + count);
+			System.out.println("Waiting for Search Button start");
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath(
+					"/html/body/table[2]/tbody/tr/td[2]/table[2]/tbody/tr[17]/td/table/tbody/tr[3]/td[4]/table/tbody/tr[1]/td[1]/table/tbody/tr/td/a")));
+			System.out.println("Wait for Search Button END");
+
+			System.out.println("Search button clicked. Now searching the tickets.. count - " + count);
 
 			// driver.findElement(By.xpath("//a[@href='/html/body/table[2]/tbody/tr/td[2]/table[2]/tbody/tr[17]/td/table/tbody/tr[3]/td[4]/table/tbody/tr[1]/td[1]/table/tbody/tr/td/a']")).click();
 			driver.findElement(By
 					.xpath("/html/body/table[2]/tbody/tr/td[2]/table[2]/tbody/tr[17]/td/table/tbody/tr[3]/td[4]/table/tbody/tr[1]/td[1]/table/tbody/tr/td/a"))
 					.click();
 
-			Thread.sleep(2 * 1000);
+			// Thread.sleep(2 * 1000);
 
-			checkPageIsReady();
+			System.out.println("Waiting for Truste Ticket list start");
+			wait.until(ExpectedConditions.visibilityOfElementLocated(By.xpath("/html/body/div/p[2]/a")));
+			System.out.println("Wait for Truste Ticket list END");
+
+			//checkPageIsReady();
 			System.out.println("Ticket list DISPLAYED. count - " + count);
 
-			Thread.sleep(5 * 1000);
+			//Thread.sleep(5 * 1000);
 
-			checkPageIsReady();
+			//checkPageIsReady();
 			System.out.println("Reading table data. count - " + count);
 			// Reading table data
 			readTableData();
@@ -95,9 +105,12 @@ public class AllTicketsRefreshTask extends TimerTask {
 		} catch (NoSuchElementException nsee) {
 
 			System.out.println("NoSuchElementException - " + count);
-		} catch (InterruptedException e) {
+		} 
+		/*
+		catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		*/
 
 	}
 
@@ -190,13 +203,14 @@ public class AllTicketsRefreshTask extends TimerTask {
 				if (dto.isDateTodayOnwards) {
 
 					countOfEligibleTickets++;
-					System.out.println(countOfEligibleTickets + "** " + dto.getId() + "\t" + " Rownum - " + dto.getRowNum() + "\t" +  dto.getTitle() + "\t"
-									+ dto.getLastModified() + "\t" + dto.getPriority() + "\t" + dto.getAssignedTo());
+					System.out.println(countOfEligibleTickets + "** " + dto.getId() + "\t" + " Rownum - "
+							+ dto.getRowNum() + "\t" + dto.getTitle() + "\t" + dto.getLastModified() + "\t"
+							+ dto.getPriority() + "\t" + dto.getAssignedTo());
 				}
 				countTicket++;
 			}
 			System.out.println("TotalTickets - " + countTicket + " countOfEligibleTickets - " + countOfEligibleTickets);
-			
+
 			JavascriptExecutor javascript = (JavascriptExecutor) driver;
 			javascript.executeScript("alert('" + countOfEligibleTickets + " ticket(s) in list. Take Action');");
 
