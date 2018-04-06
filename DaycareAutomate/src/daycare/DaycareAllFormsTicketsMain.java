@@ -9,11 +9,9 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.support.ui.Select;
 
-public class DaycareAllFormsTickets {
+public class DaycareAllFormsTicketsMain {
 
 	public static void main(String[] args) {
-
-		System.out.println("AFT started to open the website daycare.day.com/home.html");
 
 		// Setting property for geckodriver.exe to start automation - firefox
 		/*
@@ -29,8 +27,6 @@ public class DaycareAllFormsTickets {
 		// Launch the Online Store Website
 		driver.get("https://kavyas@adobe.com:Thankyouadobe@1@daycare.day.com/home.html");
 		// driver.manage().timeouts().implicitlyWait(arg0, arg1)
-
-		System.out.println("Successfully opened the website daycare.day.com/home.html");
 
 		// Scheduling Daycare All Tickets refresh task
 		startAllTicketsRefreshTask(driver);
@@ -48,16 +44,19 @@ public class DaycareAllFormsTickets {
 	public static void selectAssignedTo(WebDriver driver) {
 
 		Select oSelect = new Select(driver.findElement(By.id("AssignedTo")));
-		oSelect.selectByVisibleText("AEM Forms (LiveCycle) : entrsupp@adobe.com");
+		//oSelect.selectByVisibleText("AEM Forms (LiveCycle) : entrsupp@adobe.com");
+		
+		oSelect.selectByVisibleText("Kapil Vyas : kavyas@adobe.com");
+		
 	}
 
 	public static void startAllTicketsRefreshTask(WebDriver driver) {
 
-		System.out.println("startAllTicketsRefreshTask Start");
+		// System.out.println("startAllTicketsRefreshTask Start");
 
 		Timer time = new Timer(); // Instantiate Timer Object
 		Calendar calendar = Calendar.getInstance();
-		long interval = TimeUnit.MINUTES.toMillis(2);
+		long interval = TimeUnit.MINUTES.toMillis(1);
 
 		// Start running the task on Monday at 15:40:00, period is set to 8
 		// hours
@@ -66,7 +65,7 @@ public class DaycareAllFormsTickets {
 
 		System.out.println("Refresh scheduled for " + interval);
 
-		System.out.println("startAllTicketsRefreshTask End");
+		// System.out.println("startAllTicketsRefreshTask End");
 	}
 
 }

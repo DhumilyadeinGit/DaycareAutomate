@@ -4,27 +4,29 @@ import java.util.Date;
 
 public class TicketDTO {
 
-	int rowNum;
+	private int rowNum;
 
-	long id;
+	private long id;
 
-	Date lastModified;
+	private Date lastModified;
 
-	String assignedTo;
+	private String assignedTo;
 
-	String clientInfo;
+	private String clientInfo;
 
-	String title;
+	private String title;
 
-	String priority;
+	private String priority;
 
-	String severity;
+	private String severity;
 
-	String scope;
+	private String scope;
 
-	String status;
-	
-	boolean isDateTodayOnwards;
+	private String status;
+
+	private boolean isDateTodayOnwards;
+
+	private boolean isTicketEligible;
 
 	public int getRowNum() {
 		return rowNum;
@@ -112,6 +114,14 @@ public class TicketDTO {
 
 	public void setDateTodayOnwards(boolean isDateTodayOnwards) {
 		this.isDateTodayOnwards = isDateTodayOnwards;
+	}
+
+	public boolean isTicketEligible() {
+		return isTicketEligible;
+	}
+
+	public void setTicketEligible(boolean isTicketEligible) {
+		this.isTicketEligible = isTicketEligible;
 	}
 
 }
