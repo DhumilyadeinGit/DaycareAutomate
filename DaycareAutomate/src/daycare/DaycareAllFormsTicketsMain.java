@@ -21,7 +21,7 @@ public class DaycareAllFormsTicketsMain {
 		 */
 
 		// Setting property for chromedriver.exe to start automation - Chrome
-		System.setProperty("webdriver.chrome.driver", "C:/Kapil Java Workspace/External Resources/chromedriver.exe");
+		System.setProperty("webdriver.chrome.driver", "C:/KapilJavaWorkspace/External Resources/chromedriver.exe");
 		WebDriver driver = new ChromeDriver();
 
 		// Launch the Online Store Website

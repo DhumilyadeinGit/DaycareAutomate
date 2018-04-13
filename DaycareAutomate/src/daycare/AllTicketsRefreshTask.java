@@ -193,7 +193,11 @@ public class AllTicketsRefreshTask extends TimerTask {
 
 			for (TicketDTO ticket : eligibleTicketList) {
 
-				AllTicketsRefreshTask.openTicketToAssign(ticket);
+				if (!"Production Critical (P1)".equalsIgnoreCase(ticket.getPriority())) {
+					AllTicketsRefreshTask.openTicketToAssign(ticket);
+				} else {
+					System.out.println("P1 - " + ticket.getPriority());
+				}
 
 				break;
 			}
@@ -385,6 +389,15 @@ public class AllTicketsRefreshTask extends TimerTask {
 			WebElement assignToDD = driver.findElement(By.id("_Data_AssignedTo"));
 			assignToDD.sendKeys("Aayush Srivastava : T 919718314266, aaysriva@adobe.com");
 			Thread.sleep(3000);
+
+			/*
+			 * Set Access restriction of update
+			 * internal xpath - /html/body/table[2]/tbody/tr/td[2]/table[4]/tbody/tr[75]/td/table/tbody/tr[3]/td[4]/table/tbody/tr[1]/td[1]/input[1]
+			 * external xpath - /html/body/table[2]/tbody/tr/td[2]/table[4]/tbody/tr[75]/td/table/tbody/tr[3]/td[4]/table/tbody/tr[1]/td[1]/input[2]
+			 */
+			WebElement accessRes = driver.findElement(By.xpath("/html/body/table[2]/tbody/tr/td[2]/table[4]/tbody/tr[75]/td/table/tbody/tr[3]/td[4]/table/tbody/tr[1]/td[1]/input[1]"));
+			accessRes.click();
+			Thread.sleep(5000);
 
 		} catch (InterruptedException e) {
 			// TODO Auto-generated catch block
